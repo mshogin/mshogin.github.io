@@ -258,7 +258,7 @@ hr {
 }
 
 .page-section {
-  padding-top: 80px;
+  padding-top: 40px;
 }
 
 /*---------------------------------------------------------
@@ -414,7 +414,8 @@ h3.profile-title {
 -------------------------------------------------------- */
 /*------ banner ------ */
 .banner-bg {
-  padding: 260px 80px;
+    /* padding: 260px 80px; */
+    height: 100vh;
   position: relative;
   background: url("../img/welcome.jpg");
   background-repeat: no-repeat;
@@ -436,16 +437,27 @@ h3.profile-title {
 .welcome-text {
   position: relative;
   z-index: 4;
+  margin: 10% 20%;
 }
 .welcome-text h2 {
   font-size: 42px;
   font-family: 'robotobold';
   color: white;
   margin-bottom: 30px;
+
 }
 .welcome-text h5 {
-  font-size: 22px;
+  font-size: 26px;
   color: white;
+  font-style: italic;
+  padding-left: 20%;
+}
+
+.welcome-text h4 {
+    padding-left: 30%;
+    font-size: 20px;
+    color: white;
+    font-style: italic;
 }
 
 /*------ about us ------ */
@@ -557,4 +569,10 @@ h3.profile-title {
 }
 #footer p.copyright-text a:hover {
   color: #6cc0f7;
+}
+
+/* mshogin */
+.done-algo {
+    margin-left: 40%;
+    font-weight: bold;
 }
