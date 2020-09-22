@@ -47,11 +47,11 @@
         <a href="#" class="toggle-menu"><i class="fa fa-bars"></i></a>
         <div class="main-navigation responsive-menu">
             <ul class="navigation">
-                <li><a href="https://www.mshogin.com/#top"><i class="fa fa-home"></i>Home</a></li>
-                <li><a href="https://www.mshogin.com/#about"><i class="fa fa-user"></i>About</a></li>
-                <li><a href="https://www.mshogin.com/#projects"><i class="fa fa-newspaper-o"></i>Projects</a></li>
-                <li><a href="https://www.mshogin.com/#places"><i class="fas fa-globe-europe"></i>Places</a></li>
-                <li><a href="https://www.mshogin.com/?#blog"><i class="fas fa-blog"></i>Blog</a></li>
+                <li><a href="https://www.mshogin.com/#top" onclick="document.location='https:\/\/www.mshogin.com\/#top';"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="https://www.mshogin.com/#about" onclick="document.location='https:\/\/www.mshogin.com\/#about';"><i class="fa fa-user"></i>About</a></li>
+                <li><a href="https://www.mshogin.com/#projects" onclick="document.location='https:\/\/www.mshogin.com\/#projects';"><i class="fa fa-newspaper-o"></i>Projects</a></li>
+                <li><a href="https://www.mshogin.com/#places" onclick="document.location='https:\/\/www.mshogin.com\/#places';"><i class="fas fa-globe-europe"></i>Places</a></li>
+                <li><a onclick="document.location='https:\/\/www.mshogin.com\/#blog';" href="https://www.mshogin.com/#blog"  class="external"><i class="fas fa-blog"></i>Blog</a></li>
                 <li class="hide"><a href="https://www.mshogin.com/#contact"><i class="fa fa-envelope"></i>Contact Me</a></li>
             </ul>
         </div>
@@ -71,11 +71,11 @@
     </div> 
     <div class="main-navigation">
         <ul class="navigation">
-            <li><a href="https://www.mshogin.com/#top"><i class="fa fa-globe"></i>Welcome</a></li>
-            <li><a href="https://www.mshogin.com/#about"><i class="fa fa-pencil"></i>About</a></li>
-            <li><a href="https://www.mshogin.com/#projects"><i class="fa fa-paperclip"></i>Projects</a></li>
-            <li><a href="https://www.mshogin.com/#places"><i class="fas fa-globe-europe"></i>Places</a></li>
-            <li><a href="https://www.mshogin.com/?#blog"><i class="fas fa-blog"></i>Blog</a></li>
+            <li><a href="https://www.mshogin.com/#top" onclick="document.location='https:\/\/www.mshogin.com\/#top';"><i class="fa fa-globe"></i>Welcome</a></li>
+            <li><a href="https://www.mshogin.com/#about" onclick="document.location='https:\/\/www.mshogin.com\/#about';"><i class="fa fa-pencil"></i>About</a></li>
+            <li><a href="https://www.mshogin.com/#projects" onclick="document.location='https:\/\/www.mshogin.com\/#projects';"><i class="fa fa-paperclip"></i>Projects</a></li>
+            <li><a href="https://www.mshogin.com/#places" onclick="document.location='https:\/\/www.mshogin.com\/#places';"><i class="fas fa-globe-europe"></i>Places</a></li>
+            <li><a href="https://www.mshogin.com/#blog" onclick="document.location='https:\/\/www.mshogin.com\/#blog';"><i class="fas fa-blog"></i>Blog</a></li>
             <li class="hide"><a href="https://www.mshogin.com/#contact"><i class="fa fa-link"></i>Contact Me</a></li>
         </ul>
     </div> 
@@ -439,7 +439,14 @@
     <div class="row">
         <div class="col-md-12">
             <a class="b" href="golang/ioutil-readall">ioutil.ReadAll performance</a>
-                
+            <div>
+                In this article we consider why is using ioutil.ReadAll could be ineficient and how to workaround that issue.
+                <br/>
+                <span class="label label-default">#performance</span>
+                <span class="label label-default">#go tool pprof</span>
+                <span class="label label-default">#memory</span>
+            </div>
+            
             
         </div>
     </div> 
