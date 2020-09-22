@@ -6,10 +6,6 @@
     <description>Recent content in Golang on Mike Shogin aka mshogin. Senior Software Enginieer.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>© 2020 &lt;a href=&#39;https://www.mshogin.com&#39;&gt;Mike Shogin&lt;/a&gt;. @mshogin&lt;/a&gt;.</copyright>
-    
-	<atom:link href="https://www.mshogin.com/golang/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>© 2020 &lt;a href=&#39;https://www.mshogin.com&#39;&gt;Mike Shogin&lt;/a&gt;. @mshogin&lt;/a&gt;.</copyright><atom:link href="https://www.mshogin.com/golang/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
