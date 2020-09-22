@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+
+
+ <html class="no-js"> 
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>
+            Mike Shogin aka mshogin.
+            Senior Software Enginieer.
+        </title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <link rel="stylesheet" href="https://www.mshogin.com/css/syntax.css">
+        <link rel="stylesheet" href="https://www.mshogin.com/css/normalize.css">
+        <link rel="stylesheet" href="https://www.mshogin.com/css/font-awesome.css">
+        <link rel="stylesheet" href="https://www.mshogin.com/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://www.mshogin.com/css/templatemo-style.css">
+        <script src="https://www.mshogin.com/js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="https://kit.fontawesome.com/45761687f8.js" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        
+
+<div class="responsive-header visible-xs visible-sm">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="top-section">
+                    <div class="profile-image">
+                        <a href="https://www.mshogin.com/">
+                            <img src="https://www.mshogin.com/img/profile.jpeg" alt="mshogin">
+                        </a>
+                    </div>
+                    <div class="profile-content">
+                        <h3 class="profile-title">Mike Shogin</h3>
+                        <p class="profile-description">Software Enginieer & Systems Architect</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="toggle-menu"><i class="fa fa-bars"></i></a>
+        <div class="main-navigation responsive-menu">
+            <ul class="navigation">
+                <li><a href="#top"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="#about"><i class="fa fa-user"></i>About</a></li>
+                <li><a href="#projects"><i class="fa fa-newspaper-o"></i>Projects</a></li>
+                <li><a href="#places"><i class="fas fa-globe-europe"></i>Places</a></li>
+                <li><a href="#blog"><i class="fas fa-blog"></i>Blog</a></li>
+                <li class="hide"><a href="#contact"><i class="fa fa-envelope"></i>Contact Me</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="sidebar-menu hidden-xs hidden-sm">
+    <div class="top-section">
+        <div class="profile-image">
+            <a href="https://www.mshogin.com/">
+                <img src="https://www.mshogin.com/img/profile.jpeg" alt="mshogin">
+            </a>
+        </div>
+        <h3 class="profile-title">Mike Shogin</h3>
+        <p class="profile-description">Software Enginieer & Systems Architect</p>
+    </div> 
+    <div class="main-navigation">
+        <ul class="navigation">
+            <li><a href="#top"><i class="fa fa-globe"></i>Welcome</a></li>
+            <li><a href="#about"><i class="fa fa-pencil"></i>About</a></li>
+            <li><a href="#projects"><i class="fa fa-paperclip"></i>Projects</a></li>
+            <li><a href="#places"><i class="fas fa-globe-europe"></i>Places</a></li>
+            <li><a href="#blog"><i class="fas fa-blog"></i>Blog</a></li>
+            <li class="hide"><a href="#contact"><i class="fa fa-link"></i>Contact Me</a></li>
+        </ul>
+    </div> 
+    <div class="social-icons">
+        <ul>
+            <li><a href="https://www.facebook.com/golang.nuts"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://www.reddit.com/user/mshogin/"><i class="fab fa-reddit"></i></a></li>
+            <li><a href="https://www.facebook.com/mshogin"><i class="fab fa-facebook"></i></a></li>
+        </ul>
+    </div> 
+</div> 
+
+
+        
+        <div class="main-content">
+            <div class="fluid-container">
+
+                <div class="content-wrapper">
+
+                    <div class="page-section" id="">
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="widget-title">Inefficient ioutil.ReadAll</h4>
+            <p>This a very small article about file readers.</p>
+<p>Let&rsquo;s consider ReadAll function from ioutil package.
+We use it a lot in our code base.
+In our infrastructure, we have a backend box and we use it for the background tasks.
+Mostly it&rsquo;s about converting external data files to our internal format.</p>
+<p>One sunny day, we got a notification from OOM Killer. One of out task was killed.
+That task is about converting JSON file to some smart binary format
+for the fast data access.
+The size of the input JSON file is around 4.5G.</p>
+<p>After quick investigation we found that the largest memory allocation comes from the following code:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">go tool pprof -list problematic_package -alloc_space master.mem.pprof
+
+         .          .    100:	<span class="o">}</span>
+         .          .    101:
+         .       16GB    102:	data, err :<span class="o">=</span> ioutil.ReadAll<span class="o">(</span>reader<span class="o">)</span>
+         .          .    103:	<span class="k">if</span> err !<span class="o">=</span> nil <span class="o">{</span>
+         .          .    104:		<span class="k">return</span> nil, fmt.Errorf<span class="o">(</span><span class="s2">&#34;can&#39;t read file: %w&#34;</span>, err<span class="o">)</span>
+         .          .    105:	<span class="o">}</span>
+</code></pre></div><p>There were some research why it&rsquo;s like that.
+In short, when you work with the reader there&rsquo;s no an easy way to get information about
+the file size. Thus, it&rsquo;s not possible to allocate the buffer with the necessary size.
+Therefore, ioutil starts with the predefined minimal buffer size:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// MinRead is the minimum slice size passed to a Read call by
+</span><span class="c1">// Buffer.ReadFrom. As long as the Buffer has at least MinRead bytes beyond
+</span><span class="c1">// what is required to hold the contents of r, ReadFrom will not grow the
+</span><span class="c1">// underlying buffer.
+</span><span class="c1"></span><span class="kd">const</span> <span class="nx">MinRead</span> <span class="p">=</span> <span class="mi">512</span>
+</code></pre></div><p>This MinRead used as a value to grow the data buffer while reading if there is more data to read:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">	<span class="k">if</span> <span class="nb">int64</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nx">capacity</span><span class="p">))</span> <span class="o">==</span> <span class="nx">capacity</span> <span class="p">{</span>
+		<span class="nx">buf</span><span class="p">.</span><span class="nf">Grow</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nx">capacity</span><span class="p">))</span>
+	<span class="p">}</span>
+</code></pre></div><p>and under the hood it do the allocations</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">		<span class="nx">buf</span> <span class="o">:=</span> <span class="nf">makeSlice</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nx">c</span> <span class="o">+</span> <span class="nx">n</span><span class="p">)</span>
+		<span class="nb">copy</span><span class="p">(</span><span class="nx">buf</span><span class="p">,</span> <span class="nx">b</span><span class="p">.</span><span class="nx">buf</span><span class="p">[</span><span class="nx">b</span><span class="p">.</span><span class="nx">off</span><span class="p">:])</span>
+		<span class="nx">b</span><span class="p">.</span><span class="nx">buf</span> <span class="p">=</span> <span class="nx">buf</span>
+</code></pre></div><p>In other words, when you read huge files there happens a lot of new allocations.</p>
+<p>Taking in account all that, we prepared a hotfix like the following:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">readFile</span><span class="p">(</span><span class="nx">r</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Reader</span><span class="p">,</span> <span class="nx">size</span> <span class="kt">int64</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">data</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">size</span><span class="p">)</span>
+	<span class="nx">offset</span> <span class="o">:=</span> <span class="mi">0</span>
+	<span class="k">for</span> <span class="p">{</span>
+		<span class="nx">n</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">offset</span><span class="p">:])</span>
+		<span class="k">if</span> <span class="nx">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+			<span class="k">break</span>
+		<span class="p">}</span>
+		<span class="nx">offset</span> <span class="o">+=</span> <span class="nx">n</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="nx">io</span><span class="p">.</span><span class="nx">EOF</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;can&#39;t read file: %w&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+			<span class="p">}</span>
+			<span class="k">break</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">data</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">parseJSON</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+	<span class="nx">r</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nx">inPath</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;can&#39;t open file %q: %w&#34;</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="k">defer</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+
+	<span class="nx">fi</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Stat</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;can&#39;t get file info %q: %w&#34;</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="nx">data</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">readFile</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">fi</span><span class="p">.</span><span class="nf">Size</span><span class="p">())</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</code></pre></div><p>After this optimization memory profile changed to the predictable state:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">go tool pprof -list problematic_package -alloc_space branch.mem.pprof
+
+         .          .     99:	<span class="o">}</span>
+         .          .    100:
+    4.32GB     4.32GB    101:	data, err :<span class="o">=</span> readFile<span class="o">(</span>r, <span class="k">fi</span>.Size<span class="o">())</span>
+         .          .    102:	<span class="k">if</span> err !<span class="o">=</span> nil <span class="o">{</span>
+</code></pre></div><p>And profiles diff shows the following optimization:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">go tool pprof -top -alloc_space -base master.mem.pprof branch.mem.pprof
+File: main
+Type: alloc_space
+Time: Sep 22, <span class="m">2020</span> at 12:30am <span class="o">(</span>CEST<span class="o">)</span>
+Showing nodes accounting <span class="k">for</span> -11.92GB, 28.25% of 42.22GB total
+Dropped <span class="m">36</span> nodes <span class="o">(</span>cum &lt;<span class="o">=</span> 0.21GB<span class="o">)</span>
+      flat  flat%   sum%        cum   cum%
+     -16GB 37.90% 37.90%      -16GB 37.90%  bytes.makeSlice
+    4.32GB 10.24% 27.66%   -11.68GB 27.67%  component.glob..func3
+   -0.25GB  0.59% 28.25%    -0.25GB   0.6%  component.CreateCache
+         <span class="m">0</span>     0% 28.25%      -16GB 37.90%  bytes.<span class="o">(</span>*Buffer<span class="o">)</span>.ReadFrom
+         <span class="m">0</span>     0% 28.25%      -16GB 37.90%  bytes.<span class="o">(</span>*Buffer<span class="o">)</span>.grow
+         <span class="m">0</span>     0% 28.25%   -11.93GB 28.27%  component.ConvertJSON2Binary
+         .....
+</code></pre></div><p>The main disadvantage with such hotfix is that we need to extend the function signature and
+pass the file size together with the io.Reader interface.
+But the advantage is shown above.</p>
+<p>If there&rsquo;s some mistakes in understanding or there&rsquo;s a better solution, I&rsquo;ll be happy to get known.</p>
+
+
+        </div>
+    </div> 
+</div>
+
+
+                </div>
+
+            </div>
+        </div>
+        
+<script src="https://www.mshogin.com/js/vendor/jquery-1.10.2.min.js"></script>
+<script src="https://www.mshogin.com/js/min/plugins.min.js"></script>
+<script src="https://www.mshogin.com/js/min/main.min.js"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-31707180-2"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'UA-31707180-2');
+</script>
+
+    </body>
+</html>
