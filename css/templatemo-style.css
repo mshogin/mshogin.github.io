@@ -27,7 +27,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
+  font-size: 16px;
   vertical-align: baseline;
 }
 
@@ -222,7 +222,7 @@ h1, h2, h3, h4, h5 {
 .main-content,
 .banner-bg {
   float: right;
-  width: 77%;
+  width: 85%;
 }
 @media screen and (max-width: 1290px) {
   .main-content,
@@ -273,7 +273,7 @@ hr {
 -------------------------------------------------------- */
 .sidebar-menu {
   float: left;
-  width: 23%;
+  width: 15%;
   height: 100%;
   position: fixed;
   background-color: #5f6d7e;
@@ -587,5 +587,9 @@ h3.profile-title {
 /* mshogin */
 .done-algo {
     margin-left: 40%;
+    font-weight: bold;
+}
+.done-algo2 {
+    margin-left: 10%;
     font-weight: bold;
 }

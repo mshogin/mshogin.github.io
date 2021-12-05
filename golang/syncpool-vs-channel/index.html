@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+
+
+ <html class="no-js"> 
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Mike Shogin. Systems/Software architect, Expert Software Consultant &amp; Software Enginieer.</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <link rel="stylesheet" href="https://www.mikeshogin.com/css/syntax.css">
+        <link rel="stylesheet" href="https://www.mikeshogin.com/css/normalize.css">
+        <link rel="stylesheet" href="https://www.mikeshogin.com/css/font-awesome.css">
+        <link rel="stylesheet" href="https://www.mikeshogin.com/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://www.mikeshogin.com/css/templatemo-style.css">
+        <script src="https://www.mikeshogin.com/js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="https://kit.fontawesome.com/45761687f8.js" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        
+
+<div class="responsive-header visible-xs visible-sm">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="top-section">
+                    <div class="profile-image">
+                        <a href="https://www.mikeshogin.com/">
+                            <img src="https://www.mikeshogin.com/img/profile.jpeg" alt="mshogin">
+                        </a>
+                    </div>
+                    <div class="profile-content">
+                        <h3 class="profile-title">Mike Shogin</h3>
+                        <p class="profile-description">Mike Shogin. Systems/Software architect, Expert Software Consultant &amp; Software Enginieer.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="toggle-menu"><i class="fa fa-bars"></i></a>
+        <div class="main-navigation responsive-menu">
+            <ul class="navigation">
+                <li><a href="https://www.mikeshogin.com/#top" onclick="document.location='https:\/\/www.mikeshogin.com\/#top';"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="https://www.mikeshogin.com/#about" onclick="document.location='https:\/\/www.mikeshogin.com\/#about';"><i class="fa fa-user"></i>About</a></li>
+                <li><a href="https://www.mikeshogin.com/#projects" onclick="document.location='https:\/\/www.mikeshogin.com\/#projects';"><i class="fa fa-newspaper-o"></i>Projects</a></li>
+                <li><a href="https://www.mikeshogin.com/#places" onclick="document.location='https:\/\/www.mikeshogin.com\/#places';"><i class="fas fa-globe-europe"></i>Places</a></li>
+                <li><a onclick="document.location='https:\/\/www.mikeshogin.com\/#blog';" href="https://www.mikeshogin.com/#blog"  class="external"><i class="fas fa-blog"></i>Blog</a></li>
+                <li class="hide"><a href="https://www.mikeshogin.com/#contact"><i class="fa fa-envelope"></i>Contact Me</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="sidebar-menu hidden-xs hidden-sm">
+    <div class="top-section">
+        <div class="profile-image">
+            <a href="https://www.mikeshogin.com/">
+                <img src="https://www.mikeshogin.com/img/profile.jpeg" alt="mshogin">
+            </a>
+        </div>
+        <h3 class="profile-title">Mike Shogin</h3>
+        <p class="profile-description">Systems Architect & Software Enginieer</p>
+    </div> 
+    <div class="main-navigation">
+        <ul class="navigation">
+            <li><a href="https://www.mikeshogin.com/#top" onclick="document.location='https:\/\/www.mikeshogin.com\/#top';"><i class="fa fa-globe"></i>Welcome</a></li>
+            <li><a href="https://www.mikeshogin.com/#about" onclick="document.location='https:\/\/www.mikeshogin.com\/#about';"><i class="fa fa-pencil"></i>About</a></li>
+            <li><a href="https://www.mikeshogin.com/#projects" onclick="document.location='https:\/\/www.mikeshogin.com\/#projects';"><i class="fa fa-paperclip"></i>Projects</a></li>
+            <li><a href="https://www.mikeshogin.com/#places" onclick="document.location='https:\/\/www.mikeshogin.com\/#places';"><i class="fas fa-globe-europe"></i>Places</a></li>
+            <li><a href="https://www.mikeshogin.com/#blog" onclick="document.location='https:\/\/www.mikeshogin.com\/#blog';"><i class="fas fa-blog"></i>Blog</a></li>
+            <li class="hide"><a href="https://www.mikeshogin.com/#contact"><i class="fa fa-link"></i>Contact Me</a></li>
+        </ul>
+    </div> 
+    <div class="social-icons">
+        <ul>
+            <li><a href="https://www.facebook.com/golang.nuts"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://www.reddit.com/user/mshogin/"><i class="fab fa-reddit"></i></a></li>
+            <li><a href="https://www.facebook.com/mshogin"><i class="fab fa-facebook"></i></a></li>
+        </ul>
+    </div> 
+</div> 
+
+
+        
+        <div class="main-content">
+            <div class="fluid-container">
+
+                <div class="content-wrapper">
+
+                    <div class="page-section" id="">
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="widget-title">Benchmark access to the pool of objects: sync.Pool VS buffered channel</h4>
+            <p>This is a common situation when we need to create a global package variable and
+then access to that variable in the package&rsquo;s functions. There could be many
+different reasons why do we use global variables, let&rsquo;s talk about that in another article.</p>
+<p>Actually, there&rsquo;s nothing wrong to have a global variables in the package and there are even
+benefits following such approach. Everything is fine till the moment when we need to
+make our package <em>reloadable</em> and after that things become more interesting.</p>
+<p>I invite you to consider that by example.</p>
+<p>Let&rsquo;s implement some basic package which is doing one thing. It adds some
+property to the processing context. The value for that property is taken from
+some other data provider. It could be any data provider: file, database,
+REST/RPC API, etc. The main thing is that during the reload we must to re-initialize
+the data provider and here we starts talking about synchronization.</p>
+<p>The problem is the following:
+Imagine we have some RPC data provider. Our application is working and is processing requests.
+At some point of time, we decided to update some configuration and reload the application server.
+That means that we need to proceed with the following step:</p>
+<ol>
+<li>create new rpc client and establish connection</li>
+<li>exchange new and old clients</li>
+<li>disconnect the old client</li>
+</ol>
+<p>#2 is a great candidate for DATA RACE (<code>read more &lt;https://en.wikipedia.org/wiki/Race_condition#Software&gt;</code>_).</p>
+<p>Let&rsquo;s see how it looks like without all that <code>reloadable</code> and <code>synchronization</code>
+things.</p>
+<p>Basic server:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="kn">package</span> <span class="nx">server</span>
+
+<span class="kd">func</span> <span class="nf">ProcessRequest</span><span class="p">(</span><span class="nx">req</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span> <span class="p">{</span>
+	<span class="nx">sID</span> <span class="o">:=</span> <span class="nx">client</span><span class="p">.</span><span class="nf">GetClient</span><span class="p">().</span><span class="nf">GetServiceID</span><span class="p">()</span>
+	<span class="k">return</span> <span class="nx">context</span><span class="p">.</span><span class="nf">WithValue</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="s">&#34;service_id&#34;</span><span class="p">,</span> <span class="nx">sID</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><p>Basic client:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="kn">package</span> <span class="nx">client</span>
+
+<span class="kd">type</span> <span class="nx">rpcclient</span> <span class="kd">struct</span><span class="p">{}</span>
+
+<span class="kd">var</span> <span class="nx">client</span> <span class="o">*</span><span class="nx">rpcclient</span>
+
+<span class="kd">func</span> <span class="nf">Init</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">client</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">rpcclient</span><span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">GetClient</span><span class="p">()</span> <span class="o">*</span><span class="nx">rpcclient</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">client</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">rpcclient</span><span class="p">)</span> <span class="nf">GetServiceID</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;random %v&#34;</span><span class="p">,</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Float64</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div><p>And the client&rsquo;s code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">client</span><span class="p">.</span><span class="nf">Init</span><span class="p">()</span>
+	<span class="nf">runProcessing</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">runProcessing</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="p">{</span>
+		<span class="k">select</span> <span class="p">{</span>
+		<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">time</span><span class="p">.</span><span class="nf">After</span><span class="p">(</span><span class="mi">200</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Millisecond</span><span class="p">):</span>
+			<span class="nx">r</span> <span class="o">:=</span> <span class="nx">server</span><span class="p">.</span><span class="nf">ProcessRequest</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
+			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%+v\n&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Value</span><span class="p">(</span><span class="s">&#34;service_id&#34;</span><span class="p">))</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>If you run that you&rsquo;ll get the output similar to the following:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">random 0.30152268100656
+random 0.17326623818270528
+random 0.5410998550087353
+....
+</code></pre></div><p>OK, cool! All works. A week later the users of you product send a feature request:
+&ldquo;Cool guys! But we want to update the configuration of the application server without restarting it every time.&rdquo;</p>
+<p>No problem, that&rsquo;s an easy task, let&rsquo;s just add the reload function in the client code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nf">Reload</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">client</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">rpcclient</span><span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div><p>and add periodical reloads of the application server:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">client</span><span class="p">.</span><span class="nf">Init</span><span class="p">()</span>
+	<span class="k">go</span> <span class="nf">scheduleReload</span><span class="p">()</span>
+	<span class="nf">runProcessing</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">scheduleReload</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="p">{</span>
+		<span class="k">select</span> <span class="p">{</span>
+		<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">time</span><span class="p">.</span><span class="nf">After</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">):</span>
+			<span class="nx">client</span><span class="p">.</span><span class="nf">Reload</span><span class="p">()</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><hr>
+<h2 id="i-do-not-consider-that-question-in-this-article"><strong>NOTE</strong>
+In the real systems you usually trigger the reload by sending the HUP signal
+to the process and you implement the signal handler.
+I do not consider that question in this article.</h2>
+<p>So, all looks like done. If you run that code you will probably get the following error</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">WARNING: DATA RACE
+Write at 0x000000638740 by goroutine 7:
+  reloadable/client.Reload<span class="o">()</span>
+      /home/mshogin/mshogin_com/reloadable/client/client.go:26 +0x84
+  main.scheduleReload<span class="o">()</span>
+      /home/mshogin/mshogin_com/reloadable/main.go:30 +0x70
+
+Previous <span class="nb">read</span> at 0x000000638740 by main goroutine:
+  reloadable/server.ProcessRequest<span class="o">()</span>
+      /home/mshogin/mshogin_com/reloadable/server/server.go:9 +0x3e
+  main.runProcessing<span class="o">()</span>
+      /home/mshogin/mshogin_com/reloadable/main.go:20 +0x71
+  main.main<span class="o">()</span>
+      /home/mshogin/mshogin_com/reloadable/main.go:13 +0x49
+
+Goroutine <span class="m">7</span> <span class="o">(</span>running<span class="o">)</span> created at:
+  main.main<span class="o">()</span>
+      /home/mshogin/mshogin_com/reloadable/main.go:12 +0x44
+</code></pre></div><p>Let&rsquo;s consider a common task remove the sync.Mutex, which guards some global
+variable.</p>
+<p>Mutex is a very useful technique while prototyping, it allows do not worry about
+synchronization and performance, and keep the focus only on the system design.</p>
+<p>Once, the project is successful, the questions about performance starts rising.
+There are many different opportunities to work with the performance, and
+removing the mutexes just one of them, and one of the main opportunity which
+give a very fast result.</p>
+<p>Let&rsquo;s consider basic processing functionality and one of the step is to call
+third-party service.</p>
+<p>As a first step we create a test and a benchmark for our processing</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">server_test</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;context&#34;</span>
+	<span class="s">&#34;testing&#34;</span>
+
+	<span class="s">&#34;github.com/mshogin/mshogin.com/golang/pkg/server&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">const</span> <span class="nx">concurentRequestN</span> <span class="p">=</span> <span class="mi">100</span>
+
+<span class="kd">func</span> <span class="nf">TestProcessRequest</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">response</span> <span class="o">:=</span> <span class="nx">server</span><span class="p">.</span><span class="nf">ProcessRequest</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
+	<span class="k">if</span> <span class="nx">response</span><span class="p">.</span><span class="nf">Value</span><span class="p">(</span><span class="s">&#34;response_id&#34;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="p">{</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;got wrong response: %v&#34;</span><span class="p">,</span> <span class="nx">response</span><span class="p">.</span><span class="nf">Value</span><span class="p">(</span><span class="s">&#34;response_id&#34;</span><span class="p">))</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">BenchmarkMutex</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">b</span><span class="p">.</span><span class="nf">ReportAllocs</span><span class="p">()</span>
+	<span class="nx">b</span><span class="p">.</span><span class="nf">ResetTimer</span><span class="p">()</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">N</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">concurentRequestN</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+			<span class="k">go</span> <span class="nx">server</span><span class="p">.</span><span class="nf">ProcessRequest</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">())</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div><p>Then, we are ready to implement our server</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">server</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;context&#34;</span>
+	<span class="s">&#34;sync&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">someServiceClient</span> <span class="kd">struct</span><span class="p">{}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">someServiceClient</span><span class="p">)</span> <span class="nf">DoRequest</span><span class="p">(</span><span class="nx">req</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="mi">1</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="p">(</span>
+	<span class="nx">rpcClient</span>              <span class="p">=</span> <span class="o">&amp;</span><span class="nx">someServiceClient</span><span class="p">{}</span>
+	<span class="nx">rpcClientSync</span>          <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">ProcessRequestMutex</span><span class="p">(</span><span class="nx">req</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span> <span class="p">{</span>
+	<span class="nx">rpcClientSync</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+	<span class="k">defer</span> <span class="nx">rpcClientSync</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+	<span class="k">return</span> <span class="nx">rpcClient</span><span class="p">.</span><span class="nf">DoRequest</span><span class="p">(</span><span class="nx">req</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div><p>For simplicity, we use <em>context.Context</em> everywhere to mock <em>request-response</em>
+objects.</p>
+<p>Then, let&rsquo;s create a test.</p>
+
+        </div>
+    </div> 
+</div>
+
+
+                    <hr>
+<div class="row" id="footer">
+    <div class="col-md-12 text-center">
+        <p class="copyright-text">Copyright &copy; 2020 Mike Shogin</p>
+    </div>
+</div>
+
+
+                </div>
+
+            </div>
+        </div>
+        
+<script src="https://www.mikeshogin.com/js/vendor/jquery-1.10.2.min.js"></script>
+<script src="https://www.mikeshogin.com/js/min/plugins.min.js"></script>
+<script src="https://www.mikeshogin.com/js/min/main.min.js"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-31707180-2"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'UA-31707180-2');
+</script>
+
+    </body>
+</html>
